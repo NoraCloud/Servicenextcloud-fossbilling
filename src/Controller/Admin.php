@@ -1,8 +1,9 @@
 <?php
 
 /**
- * FOSSBilling.
+ * Nextcloud module for FOSSBilling
  *
+ * @copyright NoraCloud 2024 (https://www.noracloud.fr)
  * @copyright FOSSBilling (https://www.fossbilling.org)
  * @license   Apache-2.0
  *
@@ -19,7 +20,7 @@
  * Class does not extend any other class.
  */
 
-namespace Box\Mod\Example\Controller;
+namespace Box\Mod\Servicenextcloud\Controller;
 
 class Admin implements \FOSSBilling\InjectionAwareInterface
 {
@@ -45,18 +46,12 @@ class Admin implements \FOSSBilling\InjectionAwareInterface
     public function fetchNavigation(): array
     {
         return [
-            'group' => [
-                'index' => 1500,                // menu sort order
-                'location' => 'example',          // menu group identifier for subitems
-                'label' => __trans('Example module'),    // menu group title
-                'class' => 'example',           // used for css styling menu item
-            ],
             'subpages' => [
                 [
-                    'location' => 'example', // place this module in extensions group
-                    'label' => __trans('Example module submenu'),
-                    'index' => 1500,
-                    'uri' => $this->di['url']->adminLink('example'),
+                    'location' => 'system', // place this module in extensions group
+                    'label' => __trans('Nextcloud'),
+                    'index' => 1600,
+                    'uri' => $this->di['url']->adminLink('servicenextcloud'),
                     'class' => '',
                 ],
             ],
@@ -73,52 +68,35 @@ class Admin implements \FOSSBilling\InjectionAwareInterface
      */
     public function register(\Box_App &$app): void
     {
-        $app->get('/example', 'get_index', [], static::class);
-        $app->get('/example/test', 'get_test', [], static::class);
-        $app->get('/example/user/:id', 'get_user', ['id' => '[0-9]+'], static::class);
-        $app->get('/example/api', 'get_api', [], static::class);
+        $app->get('/servicenextcloud', 'get_index', [], static::class);
+        $app->get('/servicenextcloud/server/:id', 'get_server', ['id' => '[0-9]+'], static::class);
     }
 
-    public function get_index(\Box_App $app)
+     public function get_index(\Box_App $app)
     {
         // always call this method to validate if admin is logged in
         $this->di['is_admin_logged'];
 
-        return $app->render('mod_example_index');
+        return $app->render('mod_service_nextcloud_index');
     }
 
-    public function get_test(\Box_App $app)
+    /**
+     * Method to get server details
+     * @param \Box_App $app
+     * @param null $id
+     * @return string
+     */
+    public function get_server(\Box_App $app, $id = null)
     {
         // always call this method to validate if admin is logged in
         $this->di['is_admin_logged'];
 
-        $params = [];
-        $params['youparamname'] = 'yourparamvalue';
-
-        return $app->render('mod_example_index', $params);
-    }
-
-    public function get_user(\Box_App $app, $id)
-    {
-        // always call this method to validate if admin is logged in
-        $this->di['is_admin_logged'];
+        $server = $this->di['db']->getExistingModelById('service_nextcloud_server', $id);
 
         $params = [];
-        $params['userid'] = $id;
+        $params['server'] = $server;
 
-        return $app->render('mod_example_index', $params);
+        return $app->render('mod_servicenextcloud_server', $params);
     }
 
-    public function get_api(\Box_App $app, $id = null)
-    {
-        // always call this method to validate if admin is logged in
-        $api = $this->di['api_admin'];
-        $list_from_controller = $api->example_get_something();
-
-        $params = [];
-        $params['api_example'] = true;
-        $params['list_from_controller'] = $list_from_controller;
-
-        return $app->render('mod_example_index', $params);
-    }
-}
+   }
