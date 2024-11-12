@@ -1,12 +1,12 @@
 {
-  "id": "example",
+  "id": "servicenextcloud",
   "type": "mod",
-  "name": "Example",
-  "description": "An example module for developers to get started",
+  "name": "Nextcloud",
+  "description": "Nextcloud module for FOSSBilling",
   "icon_url": "icon.svg",
-  "homepage_url": "https://fossbilling.org",
-  "author": "FOSSBilling",
-  "author_url": "https://fossbilling.org/",
+  "homepage_url": "https://github.com/NoraCloud/Servicenextcloud-fossbilling",
+  "author": "NoraCloud",
+  "author_url": "https://www.noracloud.fr",
   "license": "Apache 2.0 - https://www.apache.org/licenses/LICENSE-2.0",
-  "version": "0.0.4"
+  "version": "0.0.1"
 }

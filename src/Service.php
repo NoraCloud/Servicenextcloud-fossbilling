@@ -1,8 +1,9 @@
 <?php
 
 /**
- * FOSSBilling.
+ * Nextcloud module for FOSSBilling.
  *
+ * @copyright NoraCloud 2024 (https://www.noracloud.fr)
  * @copyright FOSSBilling (https://www.fossbilling.org)
  * @license   Apache-2.0
  *
@@ -14,14 +15,7 @@
  * with this source code in the file LICENSE
  */
 
-/**
- * This file is a delegate for module. Class does not extend any other class.
- *
- * All methods provided in this example are optional, but function names are
- * still reserved.
- */
-
-namespace Box\Mod\Example;
+namespace Box\Mod\Servicenextcloud;
 
 use FOSSBilling\InformationException;
 
