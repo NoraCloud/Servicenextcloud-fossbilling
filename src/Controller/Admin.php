@@ -77,7 +77,7 @@ class Admin implements \FOSSBilling\InjectionAwareInterface
         // always call this method to validate if admin is logged in
         $this->di['is_admin_logged'];
 
-        return $app->render('mod_service_nextcloud_index');
+        return $app->render('mod_servicenextcloud_index');
     }
 
     /**

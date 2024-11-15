@@ -1,0 +1,118 @@
+{% import 'macro_functions.html.twig' as mf %}
+{% extends 'layout_default.html.twig' %}
+{% block meta_title %}{{ 'Nextcloud' | trans }}{% endblock %}
+    {% set active_menu = 'system' %}
+
+    {% block content %}
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" href="#tab-index" data-bs-toggle="tab">{{ 'Nextcloud Servers' | trans }}</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" href="#tab-new-node" data-bs-toggle="tab">
+                    <svg class="icon me-2">
+                        <use xlink:href="#plus" />
+                    </svg>
+                    {{ 'New server' | trans }}
+                </a>
+            </li>
+
+        </ul>
+
+        <div class="card">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="tab-index" role="tabpanel">
+                    <div class="card-body">
+                        <h5>{{ 'Servers list' | trans }}</h5>
+                    </div>
+
+                    <table class="table card-table table-vcenter table-striped text-nowrap">
+                        <thead>
+                            <tr>
+                                <th>{{ 'ID' | trans }}</th>
+                                <th>{{ 'Name' | trans }}</th>
+                                <th>{{ 'URL' | trans }}</th>
+                                <th>{{ 'Active' | trans }}</th>
+                                <th class="w-1"></th>
+                            </tr>
+                        </thead>
+                        {% set servers = admin.servicenextcloud_server_list() %}
+                        {% for server in servers %}
+
+                            <tbody>
+                                <tr>
+                                    <td>{{ server.id }}</td>
+                                    <td>{{ server.name }}</td>
+                                    <td>{{ server.url }}</td>
+                                    <td>{{ mf.q(node.active) }}</td>
+                                    <td>
+                                        <a class="btn btn-icon api-link" href="{{ 'api/admin/servicenextcloud/server_test_connection'|link({ 'id': server.id, 'CSRFToken': CSRFToken }) }}" title="{{ 'Test connection' | trans }}" data-api-msg="{{ 'Server connected' | trans }}">
+                                            <svg class="icon">
+                                                <use xlink:href="#wifi" />
+                                            </svg>
+                                        </a>
+                                        <a class="btn btn-icon" href="{{ '/servicenextcloud/server'|alink }}/{{ server.id }}">
+                                            <svg class="icon">
+                                                <use xlink:href="#edit" />
+                                            </svg>
+                                        </a>
+                                        <a class="btn btn-icon api-link" data-api-confirm="{{ 'Are you sure?' | trans }}" data-api-redirect="{{ 'servicenextcloud'|alink }}" href="{{ 'api/admin/servicenextcloud/server_delete'|link({ 'id': server.id, 'CSRFToken': CSRFToken }) }}">
+                                            <svg class="icon">
+                                                <use xlink:href="#delete" />
+                                            </svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                        {% else %}
+                            <tr>
+                                <td class="text-muted" colspan="7">{{ 'The list is empty' | trans }}</td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+
+                <div class="tab-pane fade" id="tab-new-node" role="tabpanel">
+                    <div class="card-body">
+                        <form method="post" action="admin/servicenextcloud/server_create" class="api-form" data-api-redirect="{{ 'servicenextcloud'|alink }}">
+                            <input type="hidden" name="CSRFToken" value="{{ CSRFToken }}"/>
+                            <div class="mb-3 row">
+                                <label class="form-label col-3 col-form-label">{{ 'Name' | trans }}:</label>
+                                <div class="col">
+                                    <input class="form-control" type="text" name="name" value="" required placeholder="{{ 'Unique name to identify this server' | trans }}">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="form-label col-3 col-form-label">{{ 'URL' | trans }}:</label>
+                                <div class="col">
+                                    <input class="form-control" type="text" name="url" value="" required placeholder="http(s)://...">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="form-label col-3 col-form-label">{{ 'Extra configuration' | trans }}:</label>
+                                <div class="col">
+                                    <input class="form-control" type="text" name="config" value="">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="form-label col-3 col-form-label">{{ 'Enable/Disable' | trans }}:</label>
+                                <div class="col">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" id="radioActiveYes" type="radio" name="active" value="1" checked>
+                                        <label class="form-check-label" for="radioActiveYes">{{ 'Yes' | trans }}</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" id="radioActiveNo" type="radio" name="active" value="0">
+                                        <label class="form-check-label" for="radioActiveNo">{{ 'No' | trans }}</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input type="submit" value="{{ 'Add server' | trans }}" class="btn btn-primary">
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    {% endblock %}
