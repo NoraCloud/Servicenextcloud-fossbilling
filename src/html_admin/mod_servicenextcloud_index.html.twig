@@ -43,7 +43,7 @@
                                 <tr>
                                     <td>{{ server.id }}</td>
                                     <td>{{ server.name }}</td>
-                                    <td>{{ server.url }}</td>
+                                    <td><a href="{{ server.url }}">{{ server.url }}</a></td>
                                     <td>{{ mf.q(node.active) }}</td>
                                     <td>
                                         <a class="btn btn-icon api-link" href="{{ 'api/admin/servicenextcloud/server_test_connection'|link({ 'id': server.id, 'CSRFToken': CSRFToken }) }}" title="{{ 'Test connection' | trans }}" data-api-msg="{{ 'Server connected' | trans }}">
