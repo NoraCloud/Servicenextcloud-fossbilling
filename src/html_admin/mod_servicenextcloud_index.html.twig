@@ -79,19 +79,34 @@
                             <div class="mb-3 row">
                                 <label class="form-label col-3 col-form-label">{{ 'Name' | trans }}:</label>
                                 <div class="col">
-                                    <input class="form-control" type="text" name="name" value="" required placeholder="{{ 'Unique name to identify this server' | trans }}">
+                                    <input class="form-control" type="text" name="name" required placeholder="{{ 'Unique name to identify this server' | trans }}">
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label class="form-label col-3 col-form-label">{{ 'URL' | trans }}:</label>
                                 <div class="col">
-                                    <input class="form-control" type="text" name="url" value="" required placeholder="http(s)://...">
+                                    <input class="form-control" type="text" name="url" required placeholder="http(s)://...">
                                 </div>
                             </div>
+
+                            <div class="mb-3 row">
+                                <label class="form-label col-3 col-form-label">{{ 'Username' | trans }}:</label>
+                                <div class="col">
+                                    <input class="form-control" type="text" name="username" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="form-label col-3 col-form-label">{{ 'Password' | trans }}:</label>
+                                <div class="col">
+                                    <input class="form-control" type="password" name="password" required>
+                                </div>
+                            </div>
+
                             <div class="mb-3 row">
                                 <label class="form-label col-3 col-form-label">{{ 'Extra configuration' | trans }}:</label>
                                 <div class="col">
-                                    <input class="form-control" type="text" name="config" value="">
+                                    <input class="form-control" type="text" name="config"> 
                                 </div>
                             </div>
                             <div class="mb-3 row">

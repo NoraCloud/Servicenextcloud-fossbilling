@@ -86,10 +86,13 @@ class Admin extends \Api_Abstract
         $server = $this->di['db']->dispense('service_nextcloud_server');
         $server->name = $data['name'];
         $server->url = $data['url'];
+        $server->username = $data['username'];
+        $server->password = $data['password'];
         $server->config = json_encode($data['config']);
         $server->created_at = date('Y-m-d H:i:s');
         $server->updated_at = $server->created_at;
         $server->active = 1;
+
         $this->di['db']->store($server);
 
         $this->di['logger']->info('Nextcloud server created', ['id' => $server->id]);
@@ -118,7 +121,10 @@ class Admin extends \Api_Abstract
 
         $server->name = $data['name'] ?? $server->name;
         $server->url = $data['url'] ?? $server->url;
+        $server->username = $data['username'] ?? $server->username;
+        $server->password = $data['password'] ?? $server->password;
         $server->config = json_encode($data['config']) ?? $server->config;
+        $server->active = $data['active'] ?? $server->active;
         $server->updated_at = date('Y-m-d H:i:s');
         $this->di['db']->store($server);
 
@@ -127,7 +133,6 @@ class Admin extends \Api_Abstract
         return true;
 
     }
-
 
     /**
      * Method to delete a nextcloud server
