@@ -23,6 +23,10 @@
 
 namespace Box\Mod\Servicenextcloud\Api;
 
+use Box\Mod\Servicenextcloud\NextcloudAPI as NextcloudAPI;
+
+require(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Nextcloud.php');
+
 class Admin extends \Api_Abstract
 {
 
@@ -154,6 +158,26 @@ class Admin extends \Api_Abstract
         $this->di['logger']->info('Nextcloud server deleted', ['id' => $server->id]);
 
         return true;
+    }
+
+    /**
+     * Method to test nextcloud server connection
+     * @param array $data
+     * @return bool, true if the connection was successful
+     */
+    public function server_test_connection($data): bool
+    {
+        $required = ['id' => 'Server ID'];
+        $this->di['validator']->checkRequiredParamsForArray($required, $data);
+
+        $server = $this->di['db']->load('service_nextcloud_server', $data['id']);
+        if (!$server) {
+            throw new \FOSSBilling\NotFoundException('Server not found', [], 404);
+        }
+
+        $nextcloud = new NextcloudAPI($server->url, $server->username, $server->password);
+        return $nextcloud->testConnection() && $nextcloud->testAuthentication();
+
     }
 
 }
